@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace FlyCronicles.Common.Options
 {
     public class CommonOptions
     {
         public Dictionary<ConnectionName, string> ConnectionStrings { get; set; }
-    }
-
-    public enum ConnectionName
-    { 
-       Main, Admin
     }
 }

@@ -1,5 +1,4 @@
-﻿using Common.Options;
-using Deployer;
+﻿using Deployer;
 using FlyCronicles.Common.Options;
 using FlyCronicles.Contract;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,11 +7,10 @@ using Microsoft.Extensions.Options;
 using Npgsql;
 using System;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace FlyCronicles.Deploy
+namespace FlyCronicles.DeployerService
 {
 
     /// <summary>
@@ -135,46 +133,6 @@ namespace FlyCronicles.Deploy
                 throw new DeployException($"Не удалось развернуть базу данных: " +
                     $"ошибка при проверке или создании базы: {ex.Message} {ex.StackTrace}");
             }
-        }
-    }
-
-    /// <summary>
-    /// wrapper for deploy exceptions
-    /// </summary>
-    [Serializable]
-    public class DeployException : Exception
-    {
-        /// <summary>
-        /// default ctor
-        /// </summary>
-        public DeployException()
-        {
-        }
-
-        /// <summary>
-        /// ctor
-        /// </summary>
-        /// <param name="message"></param>
-        public DeployException(string message) : base(message)
-        {
-        }
-
-        /// <summary>
-        /// ctor
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
-        public DeployException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        /// <summary>
-        /// ctor
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        protected DeployException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
         }
     }
 }
