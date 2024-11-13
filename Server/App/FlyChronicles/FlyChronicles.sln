@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30413.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyChronicles", "FlyChronicles\FlyChronicles.csproj", "{B250DA93-FA80-487A-A7CC-D45B3E396963}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB", "DB\DB.csproj", "{42D39206-B830-4012-8ADC-DC8A0DF97748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlyChronicles.DB", "DB\FlyChronicles.DB.csproj", "{42D39206-B830-4012-8ADC-DC8A0DF97748}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "Contract\Contract.csproj", "{978A771C-D0FB-4BB7-9A72-0148955AFE89}"
 EndProject
@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin", "Admin\Admin.csproj", "{8BC714A1-7BEB-43B4-8315-4CB7CA88D126}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{2A66849B-D631-4417-AE28-436316F24987}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{2A66849B-D631-4417-AE28-436316F24987}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Serilog" Version="4.1.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
@@ -20,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Contract\Contract.csproj" />
-    <ProjectReference Include="..\DB\DB.csproj" />
+    <ProjectReference Include="..\DB\FlyChronicles.DB.csproj" />
     <ProjectReference Include="..\Deploy\Deploy.csproj" />
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
