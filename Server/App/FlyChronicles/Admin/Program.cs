@@ -1,26 +1,100 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using System.IO;
+using System;
 
 namespace Admin
 {
     public class Program
     {
+        private const string _logDirectory = "Logs";
+        private const string _logFileName = "log-startup.txt";
+        private const string _appSettingsFileName = "appsettings.json";
+        private const string _startUpInfoMessage = "App starts with arguments: {0}";
+        private const string _errorNotifyOptionsSection = "ErrorNotifyOptions";
+
+        /// <summary>
+        /// Main method
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
+            string _startUpLogPath = Path.Combine(_logDirectory, _logFileName);
+            var loggerConfig = new LoggerConfiguration()
+               .WriteTo.Console()
+               .WriteTo.File(_startUpLogPath)
+               .MinimumLevel.Verbose();
+
+            using var logger = loggerConfig.CreateLogger();
+            logger.Information(string.Format(_startUpInfoMessage, string.Join(", ", args)));
+
+            GetWebHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        /// <summary>
+        /// Create IWebHostBuilder
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        protected static IWebHostBuilder GetWebHostBuilder(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args)
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseConfiguration(GetConfiguration())
+                .ConfigureAppConfiguration((hostingContext, config) => ConfigureApp(args, config))
+                .ConfigureLogging((hostingContext, logging) => CreateLogger(hostingContext, logging))
+                .UseKestrel()
+                .UseStartup<Startup>();
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Create Logger method
+        /// </summary>
+        /// <param name="hostingContext"></param>
+        /// <param name="logging"></param>
+        private static void CreateLogger(WebHostBuilderContext hostingContext, ILoggingBuilder logging)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(hostingContext.Configuration)
+                .CreateLogger();
+            logging.AddSerilog(Log.Logger);
+            logging.AddErrorNotifyLogger(config =>
+            {
+                config.Options = hostingContext.Configuration
+                    .GetSection(_errorNotifyOptionsSection)
+                    .Get<ErrorNotifyOptions>();
+            });
+        }
+
+        /// <summary>
+        /// Configure App method
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="config"></param>
+        private static void ConfigureApp(string[] args, IConfigurationBuilder config)
+        {
+            if (args != null) config.AddCommandLine(args);
+
+        }
+
+        /// <summary>
+        /// Build app Configuration
+        /// </summary>
+        /// <returns></returns>
+        private static IConfigurationRoot GetConfiguration()
+        {
+            return new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile(_appSettingsFileName, optional: false, reloadOnChange: true)
+                                .AddEnvironmentVariables()
+                                .AddDbConfiguration()
+                                .Build();
+        }
     }
 }
