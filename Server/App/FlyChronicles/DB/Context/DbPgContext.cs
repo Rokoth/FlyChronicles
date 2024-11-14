@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using DB.Models;
+using FlyChronicles.DB.Model;
+using FlyChronicles.DB.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlyChronicles.DB.Context
@@ -8,21 +9,16 @@ namespace FlyChronicles.DB.Context
     /// <summary>
     /// Postgresql context
     /// </summary>
-    public class DbPgContext : DbContext
+    /// <remarks>
+    /// ctor
+    /// </remarks>
+    /// <param name="options"></param>
+    public class DbPgContext(DbContextOptions<DbPgContext> options) : DbContext(options)
     {
         /// <summary>
         /// settings set
         /// </summary>
         public DbSet<Settings> Settings { get; set; }
-
-        /// <summary>
-        /// ctor
-        /// </summary>
-        /// <param name="options"></param>
-        public DbPgContext(DbContextOptions<DbPgContext> options) : base(options)
-        {
-
-        }
 
         /// <summary>
         /// create models
@@ -41,8 +37,8 @@ namespace FlyChronicles.DB.Context
                 {
                     var configType = typeof(EntityConfiguration<>).MakeGenericType(type);
                     var config = Activator.CreateInstance(configType);
-                    GetType().GetMethod(nameof(ApplyConf), BindingFlags.NonPublic | BindingFlags.Instance)
-                        .MakeGenericMethod(type).Invoke(this, new object[] { modelBuilder, config });
+                    GetType().GetMethod(nameof(ApplyConf), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
+                        .MakeGenericMethod(type).Invoke(this, [modelBuilder, config]);
 
                 }
             }
@@ -54,7 +50,7 @@ namespace FlyChronicles.DB.Context
         /// <typeparam name="T"></typeparam>
         /// <param name="modelBuilder"></param>
         /// <param name="config"></param>
-        private void ApplyConf<T>(ModelBuilder modelBuilder, EntityConfiguration<T> config) where T : class, IEntity
+        private static void ApplyConf<T>(ModelBuilder modelBuilder, EntityConfiguration<T> config) where T : class, IEntity
         {
             modelBuilder.ApplyConfiguration(config);
         }

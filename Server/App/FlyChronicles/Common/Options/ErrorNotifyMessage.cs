@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace FlyCronicles.Common.Options
 {

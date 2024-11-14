@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.EntityFrameworkCore;
+using FlyCronicles.Common.Options;
 
 namespace FlyChronicles
 {

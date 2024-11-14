@@ -4,7 +4,7 @@ using DB.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DB.Context
+namespace FlyChronicles.DB.Context
 {
     /// <summary>
     /// Построение отношения модели к таблице по атрибутам
