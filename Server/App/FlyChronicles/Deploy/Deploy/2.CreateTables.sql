@@ -1,9 +1,4 @@
-﻿create extension "uuid-ossp";
-create schema if not exists users;
-create schema if not exists game;
-create schema if not exists "admin";
-
-create table if not exists users."user" (
+﻿create table if not exists users."user" (
       id              uuid            not null default uuid_generate_v4()
     , "name"          varchar(50)     not null
     , "login"         varchar(50)     not null
@@ -20,6 +15,18 @@ create table if not exists users.user_info_type(
         pk_user_info_type_id  primary key(id)
 );
 
+create table if not exists users.h_user_info_type(
+      h_id            serial,
+      id              uuid            not null
+    , "name"          varchar(100)    not null
+    , code            varchar(100)    not null
+    , is_deleted      bool            not null
+    , userid          uuid            not null
+    , change_date     timestamp       not null default now()
+    , constraint 
+        pk_h_user_info_type_id  primary key(h_id)
+);
+
 create table if not exists users.user_info (
       id                 uuid            not null default uuid_generate_v4()
     , user_id            uuid            not null 
@@ -29,12 +36,26 @@ create table if not exists users.user_info (
         pk_user_info_id  primary key(id)
 );
 
+------------------- person
+
 create table if not exists game.person (
       id              uuid            not null default uuid_generate_v4()
     , "name"          varchar(50)     not null
     , user_id         uuid            not null    
     , constraint 
         pk_person_id  primary key(id)
+);
+
+create table if not exists game.h_person (
+      h_id            serial,
+      id              uuid            not null 
+    , "name"          varchar(50)     not null
+    , user_id         uuid            not null    
+    , is_deleted      bool            not null
+    , userid          uuid            not null
+    , change_date     timestamp       not null default now()
+    , constraint 
+        pk_hperson_id  primary key(h_id)
 );
 
 create table if not exists game.person_info_type(
@@ -53,6 +74,50 @@ create table if not exists game.person_info (
     , constraint 
         pk_user_info_id    primary key(id)
 );
+
+--------------------------- inventory
+create table if not exists game.inventory (
+      id                    uuid            not null default uuid_generate_v4()
+    , "name"                varchar(50)     not null
+    , inventory_type_id     uuid            not null    
+    , constraint 
+        pk_inventory_id     primary key(id)
+);
+
+create table if not exists game.h_inventory (
+      h_id                  serial
+    , id                    uuid            not null default uuid_generate_v4()
+    , "name"                varchar(50)     not null
+    , inventory_type_id     uuid            not null
+    , is_deleted            bool            not null
+    , userid                uuid            not null
+    , change_date           timestamp       not null default now()
+    , constraint 
+        pk_inventory_id     primary key(id)
+);
+
+-- todo game.inventory_info_type, inventory_info, inventory_type
+
+--------------------------- characteristic
+
+
+create table if not exists game.h_characteristic (
+      h_id                      serial
+    , id                        uuid            not null default uuid_generate_v4()
+    , "name"                    varchar(50)     not null
+    , characteristic_type_id    uuid            not null
+    , min_value                 decimal         null
+    , max_value                 decimal         null
+    , enable_values             text            null
+    , is_deleted                bool            not null
+    , userid                    uuid            not null
+    , change_date               timestamp       not null default now()
+    , constraint 
+        pk_characteristic_id    primary key(id)
+);
+
+
+-------------------------- server
 
 create table if not exists game."server" (
       id              uuid            not null default uuid_generate_v4()

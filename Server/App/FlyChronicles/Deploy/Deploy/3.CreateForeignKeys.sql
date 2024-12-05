@@ -1,4 +1,6 @@
-﻿ALTER TABLE users.user_info 
+﻿---------------------------------------------- user
+
+ALTER TABLE users.user_info 
 ADD CONSTRAINT fk_user_info_user_id 
 FOREIGN KEY (user_id) 
 REFERENCES users.user (id);
@@ -8,7 +10,9 @@ ADD CONSTRAINT fk_user_info_user_info_type_id
 FOREIGN KEY (user_info_type_id) 
 REFERENCES users.user_info_type (id);
 
-ALTER TABLE game.person 
+---------------------------------------------- person
+
+ALTER TABLE game.person
 ADD CONSTRAINT fk_person_user_id 
 FOREIGN KEY (user_id) 
 REFERENCES users.user (id);
@@ -22,6 +26,32 @@ ALTER TABLE game.person_info
 ADD CONSTRAINT fk_person_info_person_info_type_id 
 FOREIGN KEY (person_info_type_id) 
 REFERENCES game.person_info_type (id);
+
+---------------------------------------------- inventory
+
+ALTER TABLE game.inventory_info 
+ADD CONSTRAINT fk_inventory_info_inventory_id 
+FOREIGN KEY (inventory_id) 
+REFERENCES game.inventory (id);
+
+ALTER TABLE game.inventory_info 
+ADD CONSTRAINT fk_inventory_info_inventory_info_type_id 
+FOREIGN KEY (inventory_info_type_id) 
+REFERENCES game.inventory_info_type (id);
+
+---------------------------------------------- person_inventory
+
+ALTER TABLE game.person_inventory 
+ADD CONSTRAINT fk_person_inventory_inventory_id 
+FOREIGN KEY (inventory_id) 
+REFERENCES game.inventory (id);
+
+ALTER TABLE game.person_inventory 
+ADD CONSTRAINT fk_person_inventory_person_id 
+FOREIGN KEY (person_id) 
+REFERENCES game.person (id);
+
+---------------------------------------------- ship
 
 ALTER TABLE game.ship 
 ADD CONSTRAINT fk_ship_server_id 
